@@ -55,3 +55,28 @@ class Character:
         if direction not in DIRECTIONS:
             raise ValueError("unknown direction")
         self.pressed.discard(direction)
+
+    def update(self, dt: float) -> None:
+        """Advance the character using elapsed seconds."""
+        if dt < 0:
+            raise ValueError("elapsed time cannot be negative")
+
+        horizontal, vertical = movement_vector(self.pressed)
+        if horizontal < 0:
+            self.facing = "left"
+        elif horizontal > 0:
+            self.facing = "right"
+
+        old_position = self.x, self.y
+        half_sprite = SPRITE_SIZE / 2
+        self.x = clamp(
+            self.x + horizontal * MOVE_SPEED * dt,
+            half_sprite,
+            CANVAS_WIDTH - half_sprite,
+        )
+        self.y = clamp(
+            self.y + vertical * MOVE_SPEED * dt,
+            half_sprite,
+            CANVAS_HEIGHT - half_sprite,
+        )
+        self.moving = (self.x, self.y) != old_position
