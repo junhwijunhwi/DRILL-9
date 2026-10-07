@@ -40,3 +40,13 @@ class Character:
     moving: bool = False
     frame: int = 0
     animation_elapsed: float = 0.0
+
+    def press(self, direction: str) -> None:
+        if direction not in DIRECTIONS:
+            raise ValueError("unknown direction")
+        self.pressed.add(direction)
+
+    def release(self, direction: str) -> None:
+        if direction not in DIRECTIONS:
+            raise ValueError("unknown direction")
+        self.pressed.discard(direction)
