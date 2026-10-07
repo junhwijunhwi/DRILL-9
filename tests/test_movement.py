@@ -1,6 +1,7 @@
 import unittest
+from math import hypot
 
-from movement import Character, key_axis
+from movement import Character, MOVE_SPEED, key_axis
 
 
 class InputTests(unittest.TestCase):
@@ -14,6 +15,31 @@ class InputTests(unittest.TestCase):
         character.press("up")
         character.release("left")
         self.assertEqual(key_axis(character.pressed), (0, 1))
+
+
+class MovementTests(unittest.TestCase):
+    def test_each_axis_moves_at_configured_speed(self):
+        for direction, expected in (
+            ("left", (-MOVE_SPEED, 0)),
+            ("right", (MOVE_SPEED, 0)),
+            ("up", (0, MOVE_SPEED)),
+            ("down", (0, -MOVE_SPEED)),
+        ):
+            with self.subTest(direction=direction):
+                character = Character()
+                start = character.x, character.y
+                character.press(direction)
+                character.update(1.0)
+                displacement = character.x - start[0], character.y - start[1]
+                self.assertEqual(displacement, expected)
+
+    def test_diagonal_speed_matches_axis_speed(self):
+        character = Character()
+        start = character.x, character.y
+        character.press("up")
+        character.press("right")
+        character.update(1.0)
+        self.assertAlmostEqual(hypot(character.x - start[0], character.y - start[1]), MOVE_SPEED)
 
 
 if __name__ == "__main__":
