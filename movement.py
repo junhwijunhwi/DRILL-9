@@ -68,6 +68,7 @@ class Character:
             self.facing = "right"
 
         old_position = self.x, self.y
+        was_moving = self.moving
         half_sprite = SPRITE_SIZE / 2
         self.x = clamp(
             self.x + horizontal * MOVE_SPEED * dt,
@@ -80,3 +81,9 @@ class Character:
             CANVAS_HEIGHT - half_sprite,
         )
         self.moving = (self.x, self.y) != old_position
+        if self.moving != was_moving:
+            self.animation_elapsed = 0.0
+            self.frame = 0
+        else:
+            self.animation_elapsed += dt
+            self.frame = int(self.animation_elapsed / FRAME_DURATION) % FRAME_COUNT
