@@ -10,6 +10,11 @@ FRAME_COUNT = 8
 FRAME_DURATION = 0.1
 MOVE_SPEED = 240.0
 
+
+def clamp(value: float, lower: float, upper: float) -> float:
+    """Keep a sprite center within one canvas axis."""
+    return max(lower, min(value, upper))
+
 DIRECTIONS = frozenset({"left", "right", "up", "down"})
 
 
