@@ -1,42 +1,36 @@
-from pico2d import *
+"""Keyboard controlled character movement for Drill 9."""
+
 from pathlib import Path
 
+import pico2d as p2d
 
-open_canvas()
-asset_dir = Path(__file__).resolve().parent
-grass = load_image(str(asset_dir / 'grass.png'))
-character = load_image(str(asset_dir / 'animation_sheet.png'))
+from movement import CANVAS_HEIGHT, CANVAS_WIDTH, SPRITE_SIZE, Character
 
 
-def handle_events():
-    global running,dir
-    
+def main() -> None:
+    asset_dir = Path(__file__).resolve().parent
+    p2d.open_canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
+    try:
+        background = p2d.load_image(str(asset_dir / "TUK_GROUND.png"))
+        sprite = p2d.load_image(str(asset_dir / "animation_sheet.png"))
+        character = Character()
+        running = True
 
-    events = get_events()
-    for event in events:
-        if event.type == SDL_QUIT:
-            running = False
-        elif event.type == SDL_KEYDOWN:
-            if event.key == SDLK_ESCAPE:
-                running = False
-            elif event.key == SDLK_LEFT:
-                dir = -1
-            elif event.key == SDLK_RIGHT:
-                dir = 1
-running = True
-x = 800 // 2
-frame = 0
-dir = 0     
-while running:
-    clear_canvas()
-    grass.draw(400,30)
-    character.clip_draw(frame*100,100,100,100,x,90)
-    update_canvas()
-    handle_events()
-    frame = (frame + 1) % 8
-    x += dir * 5
-    delay(0.05)
+        while running:
+            for event in p2d.get_events():
+                if event.type == p2d.SDL_QUIT:
+                    running = False
+                elif event.type == p2d.SDL_KEYDOWN and event.key == p2d.SDLK_ESCAPE:
+                    running = False
+
+            p2d.clear_canvas()
+            background.draw(CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2)
+            sprite.clip_draw(0, 300, SPRITE_SIZE, SPRITE_SIZE, character.x, character.y)
+            p2d.update_canvas()
+            p2d.delay(0.01)
+    finally:
+        p2d.close_canvas()
 
 
-close_canvas()
-
+if __name__ == "__main__":
+    main()
