@@ -35,6 +35,9 @@ def main() -> None:
                 elif event.type == p2d.SDL_KEYUP and event.key in KEY_TO_DIRECTION:
                     character.release(KEY_TO_DIRECTION[event.key])
 
+            if not running:
+                break
+
             now = p2d.get_time()
             character.update(max(0.0, now - last_time))
             last_time = now
