@@ -29,6 +29,8 @@ def main() -> None:
                     running = False
                 elif event.type == p2d.SDL_KEYDOWN and event.key == p2d.SDLK_ESCAPE:
                     running = False
+                elif event.type == p2d.SDL_KEYDOWN and event.key in KEY_TO_DIRECTION:
+                    character.press(KEY_TO_DIRECTION[event.key])
 
             p2d.clear_canvas()
             background.draw(CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2)
