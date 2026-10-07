@@ -1,6 +1,7 @@
 """Drill 9 character movement and sprite state, independent of the window."""
 
 from math import hypot
+from dataclasses import dataclass, field
 
 CANVAS_WIDTH = 1280
 CANVAS_HEIGHT = 1024
@@ -28,3 +29,14 @@ def movement_vector(pressed):
     if not length:
         return 0.0, 0.0
     return horizontal / length, vertical / length
+
+
+@dataclass
+class Character:
+    x: float = CANVAS_WIDTH / 2
+    y: float = CANVAS_HEIGHT / 2
+    facing: str = "right"
+    pressed: set[str] = field(default_factory=set)
+    moving: bool = False
+    frame: int = 0
+    animation_elapsed: float = 0.0
