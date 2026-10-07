@@ -1,7 +1,7 @@
 import unittest
 from math import hypot
 
-from movement import Character, MOVE_SPEED, key_axis
+from movement import CANVAS_HEIGHT, CANVAS_WIDTH, SPRITE_SIZE, Character, MOVE_SPEED, key_axis
 
 
 class InputTests(unittest.TestCase):
@@ -40,6 +40,23 @@ class MovementTests(unittest.TestCase):
         character.press("right")
         character.update(1.0)
         self.assertAlmostEqual(hypot(character.x - start[0], character.y - start[1]), MOVE_SPEED)
+
+    def test_sprite_stays_inside_all_screen_edges(self):
+        half = SPRITE_SIZE / 2
+        for direction, coordinate, bound in (
+            ("left", "x", half),
+            ("right", "x", CANVAS_WIDTH - half),
+            ("down", "y", half),
+            ("up", "y", CANVAS_HEIGHT - half),
+        ):
+            with self.subTest(direction=direction):
+                character = Character()
+                character.press(direction)
+                character.update(100.0)
+                self.assertEqual(getattr(character, coordinate), bound)
+                character.update(1.0)
+                self.assertEqual(getattr(character, coordinate), bound)
+                self.assertFalse(character.moving)
 
 
 if __name__ == "__main__":
