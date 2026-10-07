@@ -6,6 +6,13 @@ import pico2d as p2d
 
 from movement import CANVAS_HEIGHT, CANVAS_WIDTH, SPRITE_SIZE, Character
 
+KEY_TO_DIRECTION = {
+    p2d.SDLK_LEFT: "left",
+    p2d.SDLK_RIGHT: "right",
+    p2d.SDLK_UP: "up",
+    p2d.SDLK_DOWN: "down",
+}
+
 
 def main() -> None:
     asset_dir = Path(__file__).resolve().parent
