@@ -87,3 +87,10 @@ class Character:
         else:
             self.animation_elapsed += dt
             self.frame = int(self.animation_elapsed / FRAME_DURATION) % FRAME_COUNT
+
+    @property
+    def sprite_row(self) -> int:
+        """Sprite sheet row counted from the bottom, as pico2d expects."""
+        if self.moving:
+            return 0 if self.facing == "left" else 1
+        return 2 if self.facing == "left" else 3
