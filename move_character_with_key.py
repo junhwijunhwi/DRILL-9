@@ -41,7 +41,14 @@ def main() -> None:
 
             p2d.clear_canvas()
             background.draw(CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2)
-            sprite.clip_draw(0, 300, SPRITE_SIZE, SPRITE_SIZE, character.x, character.y)
+            sprite.clip_draw(
+                character.frame * SPRITE_SIZE,
+                character.sprite_row * SPRITE_SIZE,
+                SPRITE_SIZE,
+                SPRITE_SIZE,
+                character.x,
+                character.y,
+            )
             p2d.update_canvas()
             p2d.delay(0.01)
     finally:
