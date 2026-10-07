@@ -22,6 +22,7 @@ def main() -> None:
         sprite = p2d.load_image(str(asset_dir / "animation_sheet.png"))
         character = Character()
         running = True
+        last_time = p2d.get_time()
 
         while running:
             for event in p2d.get_events():
@@ -33,6 +34,10 @@ def main() -> None:
                     character.press(KEY_TO_DIRECTION[event.key])
                 elif event.type == p2d.SDL_KEYUP and event.key in KEY_TO_DIRECTION:
                     character.release(KEY_TO_DIRECTION[event.key])
+
+            now = p2d.get_time()
+            character.update(max(0.0, now - last_time))
+            last_time = now
 
             p2d.clear_canvas()
             background.draw(CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2)
