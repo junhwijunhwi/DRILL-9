@@ -59,5 +59,40 @@ class MovementTests(unittest.TestCase):
                 self.assertFalse(character.moving)
 
 
+class AnimationTests(unittest.TestCase):
+    def test_vertical_movement_preserves_facing(self):
+        character = Character()
+        character.press("left")
+        character.update(0.1)
+        self.assertEqual(character.sprite_row, 0)
+        character.release("left")
+        character.press("up")
+        character.update(0.1)
+        self.assertEqual(character.sprite_row, 0)
+        character.release("up")
+        character.update(0.1)
+        self.assertEqual(character.sprite_row, 2)
+
+    def test_right_idle_and_run_rows(self):
+        character = Character()
+        self.assertEqual(character.sprite_row, 3)
+        character.press("right")
+        character.update(0.1)
+        self.assertEqual(character.sprite_row, 1)
+
+    def test_animation_cycles_and_resets_on_state_change(self):
+        character = Character()
+        character.update(0.3)
+        self.assertEqual(character.frame, 2)
+        character.press("right")
+        character.update(0.1)
+        self.assertEqual(character.frame, 0)
+        character.update(0.8)
+        self.assertEqual(character.frame, 0)
+        character.release("right")
+        character.update(0.1)
+        self.assertEqual(character.frame, 0)
+
+
 if __name__ == "__main__":
     unittest.main()
